@@ -1,9 +1,15 @@
 <template>
   <div id="app">
-    <input type="text" v-model="search" @keyup.enter="invia">
-    <div v-for="(movie, index) in storeMovie" :key="index">
-      {{ movie.title }} , {{movie.original_title}} ,{{movie.original_language}} , {{movie.vote_averange}}<br>
+    <input type="text" v-model="search" @keyup.enter="sendSearch">
+    <div v-if="storeMovie.length > 0">
+      <div v-for="(movie, index) in storeMovie" :key="index">
+        {{ movie.title }} , {{movie.original_title}} ,{{movie.original_language}} , {{movie.vote_averange}}<br>
+      </div>
     </div>
+    <div v-else>
+      <p>Non ci sono risultati</p>
+    </div>
+    
   </div>
 </template>
 
@@ -35,14 +41,15 @@ export default {
         const result = response.data.results;
         console.log(response);
         this.storeMovie = result.slice();
-
+        console.log(this.storeMovie);
       })
     },
 
-    invia(){
+    sendSearch(){
       console.log(this.search);
       this.getMovies();
-    }
+    },
+    
   }
 }
 </script>
