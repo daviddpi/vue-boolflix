@@ -1,28 +1,54 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input type="text" v-model="search" @keyup.enter="invia">
+    <div v-for="(movie, index) in storeMovie" :key="index">
+      {{ movie.title }} , {{movie.original_title}} ,{{movie.original_language}} , {{movie.vote_averange}}<br>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    
+  },
+
+  data(){
+    return{
+      search: "",
+      storeMovie: [],
+    }
+  },
+  methods: {
+
+    getMovies(){
+      axios.get("https://api.themoviedb.org/3/search/movie", {
+        params: {
+          api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+          query: this.search,
+        }
+      })
+      .then( (response) => {
+        const result = response.data.results;
+        console.log(response);
+        this.storeMovie = result.slice();
+
+      })
+    },
+
+    invia(){
+      console.log(this.search);
+      this.getMovies();
+    }
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import './style/general.scss';
+
+
 </style>
