@@ -3,7 +3,7 @@
     <input type="text" v-model="search" @keyup.enter="sendSearch">
     <div>
       <div v-for="(movie, index) in storeMovie" :key="index">
-        {{ movie.title }} , {{movie.original_title}} , {{movie.vote_averange}}
+        {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
         <div v-if="confirmImg(movie)">
           <img :src="movie.original_language | convertFlag()" alt="">
         </div>
