@@ -4,12 +4,14 @@
     <div>
       <div v-for="(movie, index) in storeMovieLang" :key="index">
         {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
-        <div>
-          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" alt="">
+        <div v-if="showFlag.visible && showFlag.index != index">
+          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
+        </div>
+        <div v-else>
+          {{movie.original_language}}
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -24,6 +26,10 @@ export default {
     return{
       search: "",
       storeMovieSerie: [],
+      showFlag: {
+        index: -1,
+        visible: true,
+      }
     }
   },
 
@@ -56,8 +62,12 @@ export default {
     sendSearch(){
       console.log(this.search);
       this.getMoviesAndSeries();
-      
+      this.showFlag.index = -1;
     },
+
+    imgNotFound(index){
+      this.showFlag.index = index;
+    }
   },
   
   computed: {
