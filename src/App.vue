@@ -34,29 +34,44 @@ export default {
 
   methods: {
 
-    getMovies(){
-      axios.get("https://api.themoviedb.org/3/search/movie", {
+    getMoviesAndSeries(){
+      const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
+          params: {
+            api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            query: this.search,
+          }
+        });
+      
+      const addSeries = axios.get("https://api.themoviedb.org/3/search/tv", {
         params: {
-          api_key: "401d4009e7dd2687f44c4cf8d0c98098",
-          query: this.search,
-        }
-      })
-      .then( (response) => {
-        const result = response.data.results;
-        console.log(response);
-        this.storeMovie = result.slice();
-        console.log(this.storeMovie);
-      })
+            api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            query: this.search,
+          }
+      });
+
+      axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
+        const resultOne = responses[0].data.results;
+        const resultTwo = responses[1].data.results;
+
+        console.log("La risposta API ", responses);
+        console.log("Il primo ",resultOne);
+        console.log("Il secondo ",resultTwo);
+        this.storeMovie = [...resultOne, ...resultTwo];
+      })).catch(errors => {
+        console.error(errors);
+      });
     },
 
     sendSearch(){
       console.log(this.search);
-      this.getMovies();
+      this.getMoviesAndSeries();
       
     },
 
     /**
      * La funziona passa il valore TRUE in caso la condizione sia verificata, il valore FALSO se non viene verificata
+     * La funzione serve per capire se la stringa 'original_language' viene "convertita" in immagine tramite il filters
+     * se essa non viene converita, allorà non sarà un'immagine
      * @param item è l'array passato, in questo caso movie
      */
     confirmImg(item){
@@ -73,7 +88,9 @@ export default {
   filters: {
     
     /** La funziona verifica se il valore str chiamato è uguale ad uno dei casi, se è vero la funziona ritorna
-     * la funzione sotto forma di bandiera, in caso contrario ritornerà solo il nome in forma scritta.
+     * la funzione sotto forma di bandiera (immagine), in caso contrario ritornerà solo il nome in forma scritta.
+     * La funzione comunica indirettamente con la funzione "confirmImg" altrimenti verrebbe visualizzata
+     * sia la bandiera sotto forma di immagine sia il testo
      * @param str è il valore passato "original language" preso dalla chiatama
      */
     convertFlag(str){
