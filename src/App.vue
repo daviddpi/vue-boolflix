@@ -4,8 +4,8 @@
     <div>
       <div v-for="(movie, index) in storeMovieLang" :key="index">
         {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
-        <div v-if="showFlag != index">
-          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
+        <div v-if="showFlag.visible && showFlag.index != index">
+          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error.prevent="imgNotFound(index)">
         </div>
         <div v-else>
           {{movie.original_language}}
@@ -26,7 +26,10 @@ export default {
     return{
       search: "",
       storeMovieSerie: [],
-      showFlag: -1,
+      showFlag: {
+        index: -1,
+        visible: true,
+      }
     }
   },
 
@@ -48,43 +51,62 @@ export default {
       axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
         const resultOne = responses[0].data.results;
         const resultTwo = responses[1].data.results;
-        // console.log("La risposta API ", responses);
-        // console.log("Il primo ",resultOne);
-        // console.log("Il secondo ",resultTwo);
+        console.log("La risposta API ", responses);
+        console.log("Il primo ",resultOne);
+        console.log("Il secondo ",resultTwo);
         this.storeMovieSerie = [...resultOne, ...resultTwo];
       })).catch(errors => {
         console.error(errors);
       });
     },
     sendSearch(){
-      // console.log(this.search);
+      console.log(this.search);
       this.getMoviesAndSeries();
-      this.showFlag = -1;
+      this.showFlag.index = -1;
     },
 
     imgNotFound(index){
-      this.showFlag = index;
+      this.showFlag.index = index;
     }
   },
   
   computed: {
+    /**
+     * La funzione converte la lingua nella bandiera corretta da visualizzare
+     */
     storeMovieLang(){
-      return this.storeMovieSerie.filter( element =>{
-        switch(element.original_language){
+
+      return this.storeMovieSerie.filter( str => {
+        switch(str.original_language){
           case "en":
-            return element.original_language ="gb";
-
+            return str.original_language ="gb";
+  
           case "ja":
-            return element.original_language = "jp";
-
+            return str.original_language = "jp";
+  
           case "ko":
-            return element.original_language = "kr";
-
+            return str.original_language = "kr";
+  
           case "zh":
-            return element.original_language = "cn";
-
+            return str.original_language = "cn";
+          
+          case "hi":
+            return str.original_language = "in";
+  
+          case "ur":
+            return str.original_language = "in";
+  
+          case "uk":
+            return str.original_language = "in";
+          
+          case "cs":
+            return str.original_language = "cz";
+  
+          case "ar":
+            return str.original_language = "ae";
+  
           default:
-            return element
+            return str.original_language;
         }
       })
     }
@@ -94,7 +116,6 @@ export default {
 
 <style lang="scss">
 @import './style/general.scss';
-img{
-  width: 25px;
-}
+
+
 </style>
