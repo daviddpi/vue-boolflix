@@ -2,17 +2,16 @@
   <div id="app">
     <input type="text" v-model="search" @keyup.enter="sendSearch">
     <div>
-      <div v-for="(movie, index) in storeMovie" :key="index">
+      <div v-for="(movie, index) in storeMovieLang" :key="index">
         {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
-        <div v-if="confirmImg(movie)">
-          <img :src="movie.original_language | convertFlag()" alt="">
+        <div v-if="showFlag.visible && showFlag.index != index">
+          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error.prevent="imgNotFound(index)">
         </div>
         <div v-else>
-          {{movie.original_language | convertFlag() }}
+          {{movie.original_language}}
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -26,9 +25,14 @@ export default {
   data(){
     return{
       search: "",
-      storeMovie: [],
+      storeMovieSerie: [],
+      showFlag: {
+        index: -1,
+        visible: true,
+      }
     }
   },
+
   methods: {
     getMoviesAndSeries(){
       const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
@@ -50,7 +54,7 @@ export default {
         console.log("La risposta API ", responses);
         console.log("Il primo ",resultOne);
         console.log("Il secondo ",resultTwo);
-        this.storeMovie = [...resultOne, ...resultTwo];
+        this.storeMovieSerie = [...resultOne, ...resultTwo];
       })).catch(errors => {
         console.error(errors);
       });
@@ -58,62 +62,60 @@ export default {
     sendSearch(){
       console.log(this.search);
       this.getMoviesAndSeries();
-      
+      this.showFlag.index = -1;
     },
-    /**
-     * La funziona passa il valore TRUE in caso la condizione sia verificata, il valore FALSO se non viene verificata
-     * La funzione serve per capire se la stringa 'original_language' viene "convertita" in immagine tramite il filters
-     * se essa non viene converita, allorà non sarà un'immagine
-     * @param item è l'array passato, in questo caso movie
-     */
-    confirmImg(item){
-      if(item.original_language == "it" || item.original_language == "en" || 
-      item.original_language == "de" || item.original_language == "fr" || item.original_language == "es"){
-        return true;
-      }
-      return false;
+
+    imgNotFound(index){
+      this.showFlag.index = index;
     }
-    
   },
   
-  filters: {
-    
-    /** La funziona verifica se il valore str chiamato è uguale ad uno dei casi, se è vero la funziona ritorna
-     * la funzione sotto forma di bandiera (immagine), in caso contrario ritornerà solo il nome in forma scritta.
-     * La funzione comunica indirettamente con la funzione "confirmImg" altrimenti verrebbe visualizzata
-     * sia la bandiera sotto forma di immagine sia il testo
-     * @param str è il valore passato "original language" preso dalla chiatama
+  computed: {
+    /**
+     * La funzione converte la lingua nella bandiera corretta da visualizzare
      */
-    convertFlag(str){
-      switch (str){
-        case "it":
-          str = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png";
-          return str
-        case "en":
-          str = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png";
-          return str
-        case "de":
-          str = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/1280px-Flag_of_Germany.svg.png";
-          return str;
-        case "fr":
-          str = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1280px-Flag_of_France.svg.png";
-          return str;
-        
-        case "es":
-          str = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1280px-Flag_of_Spain.svg.png";
-          return str;
-        
-        default:
-          return str;
-      }
+    storeMovieLang(){
+
+      return this.storeMovieSerie.filter( str => {
+        switch(str.original_language){
+          case "en":
+            return str.original_language ="gb";
+  
+          case "ja":
+            return str.original_language = "jp";
+  
+          case "ko":
+            return str.original_language = "kr";
+  
+          case "zh":
+            return str.original_language = "cn";
+          
+          case "hi":
+            return str.original_language = "in";
+  
+          case "ur":
+            return str.original_language = "in";
+  
+          case "uk":
+            return str.original_language = "in";
+          
+          case "cs":
+            return str.original_language = "cz";
+  
+          case "ar":
+            return str.original_language = "ae";
+  
+          default:
+            return str.original_language;
+        }
+      })
     }
-  },
+  }
 }
 </script>
 
 <style lang="scss">
 @import './style/general.scss';
-img{
-  width: 25px;
-}
+
+
 </style>
