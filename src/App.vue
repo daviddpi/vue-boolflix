@@ -4,7 +4,7 @@
     <div>
       <div v-for="(movie, index) in storeMovieLang" :key="index">
         {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
-        <div v-if="showFlag.visible && showFlag.index != index">
+        <div v-if="showFlag != index">
           <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
         </div>
         <div v-else>
@@ -26,10 +26,7 @@ export default {
     return{
       search: "",
       storeMovieSerie: [],
-      showFlag: {
-        index: -1,
-        visible: true,
-      }
+      showFlag: -1,
     }
   },
 
@@ -51,32 +48,41 @@ export default {
       axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
         const resultOne = responses[0].data.results;
         const resultTwo = responses[1].data.results;
-        console.log("La risposta API ", responses);
-        console.log("Il primo ",resultOne);
-        console.log("Il secondo ",resultTwo);
+        // console.log("La risposta API ", responses);
+        // console.log("Il primo ",resultOne);
+        // console.log("Il secondo ",resultTwo);
         this.storeMovieSerie = [...resultOne, ...resultTwo];
       })).catch(errors => {
         console.error(errors);
       });
     },
     sendSearch(){
-      console.log(this.search);
+      // console.log(this.search);
       this.getMoviesAndSeries();
-      this.showFlag.index = -1;
+      this.showFlag = -1;
     },
 
     imgNotFound(index){
-      this.showFlag.index = index;
+      this.showFlag = index;
     }
   },
   
   computed: {
     storeMovieLang(){
       return this.storeMovieSerie.filter( element =>{
-        if( element.original_language === "en"){
-           return element.original_language = "gb";
+        switch(element.original_language){
+          case "en":
+            return element.original_language ="gb";
+
+          case "ja":
+            return element.original_language = "jp";
+
+          case "ko":
+            return element.original_language = "kr";
+
+          default:
+            return element
         }
-        return element;
       })
     }
   }
