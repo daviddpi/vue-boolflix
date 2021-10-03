@@ -80,6 +80,9 @@ export default {
           case "ko":
             return element.original_language = "kr";
 
+          case "zh":
+            return element.original_language = "cn";
+
           default:
             return element
         }
