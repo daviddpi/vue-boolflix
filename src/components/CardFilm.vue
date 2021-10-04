@@ -1,30 +1,33 @@
 <template>
     <div class="card-movie">
         <img class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
+        
+        <div class="info-card">
+            <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
+            <p><strong>Titolo originale:</strong> {{original_title ? original_title : originalSerie_title}}</p>
 
-        <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
-        <p>Titolo originale: {{original_title ? original_title : originalSerie_title}}</p>
+            <div class="d-flex">
+                <p class="pe-3"><strong>Lingua: </strong></p>
+                <div v-if="lang == 'it' ">
+                    <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png">
+                </div>
+                <div v-else-if="lang == 'en' ">
+                    <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
+                </div>
+                <div v-else>
+                    {{lang}}
+                </div>
+            </div>
 
-        <div class="mb-3 d-flex">
-            <p class="pe-3">Lingua:</p>
-            <div v-if="lang == 'it' ">
-                <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png">
+            <div class="d-flex mb-3">
+                <div v-for="(starFull, index) in valutation()" :key="index">
+                <i class="fas fa-star"></i>
+                </div>
+                <div v-for="(starEmpty, index) in (5 - valutation())" :key="(5 - index)">
+                <i class="fas fa-star starEmpty"></i>
+                </div>
             </div>
-            <div v-else-if="lang == 'en' ">
-                <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-            </div>
-            <div v-else>
-                {{lang}}
-            </div>
-        </div>
-
-        <div class="d-flex">
-            <div v-for="(starFull, index) in valutation()" :key="index">
-            <i class="fas fa-star"></i>
-            </div>
-            <div v-for="(starEmpty, index) in (5 - valutation())" :key="(5 - index)">
-            <i class="fas fa-star starEmpty"></i>
-            </div>
+            <p><strong>Overview:</strong> {{ overview | cutString() }}</p>
         </div>
     </div>
 </template>
@@ -41,11 +44,21 @@ export default {
         lang: String,
         imgFilm: String,
         voteAverage: Number,
+        overview: String
     },
 
     methods: {
         valutation(){
             return Math.ceil(this.voteAverage / 2);
+        }
+    },
+
+    filters: {
+        cutString(str){
+            if(str.length > 300){
+                return str.slice(0, 300) + "...";
+            }
+            return str;
         }
     }
 
@@ -57,10 +70,29 @@ export default {
 
 .card-movie{
     color: white;
+    background-color: black;
+    border: 3px solid $secondaryColor;
+    padding-top: 20px;
+    .img-movie{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        
+    }
+
+    &:hover{
+        .info-card{
+            display: block;
+        }
+
+        .img-movie{
+            display: none;
+        }
+    }
 }
 
-.img-movie{
-    width: 100%;
+.info-card{
+    display: none;
 }
 
 .fas{
