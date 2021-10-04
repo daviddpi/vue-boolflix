@@ -14,8 +14,11 @@
             {{movie.original_language}}
           </div>
           <div class="d-flex">
-            <div v-for="(star, index) in valutation(movie)" :key="index">
+            <div v-for="(starFull, index) in valutation(movie)" :key="index">
               <i class="fas fa-star"></i>
+            </div>
+            <div v-for="(starEmpty, index) in (5 - valutation(movie))" :key="index">
+              <i class="far fa-star"></i>
             </div>
           </div>
         </div>
