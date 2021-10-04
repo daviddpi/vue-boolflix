@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <Header @sendSearch="TakenSearch" />
-    <Main :toSearch="needle" />
-
+    <Header @sendSearch="getMoviesAndSeries" />
+    <Main :movieBD="storeMovieSerie" />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
 import Main from './components/Main.vue'
+import axios from 'axios'
 
 
 export default {
@@ -21,12 +21,39 @@ export default {
   data(){
     return{
       needle: "",
+      storeMovieSerie: [],
     }
   },
 
   methods: {
-    TakenSearch(needle){
-      console.log(needle);
+    getMoviesAndSeries(needle){
+      const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
+        params: {
+            api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            language: "it-IT",
+            query: needle,
+        }
+      });
+            
+      const addSeries = axios.get("https://api.themoviedb.org/3/search/tv", {
+          params: {
+              api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+              language: "it-IT",
+              query: needle,
+          }
+      });
+
+      axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
+        const resultOne = responses[0].data.results;
+        const resultTwo = responses[1].data.results;
+        console.log("La risposta API ", responses);
+        console.log("Il primo ",resultOne);
+        console.log("Il secondo ",resultTwo);
+        this.storeMovieSerie = [...resultOne, ...resultTwo];
+        console.log(this.storeMovieSerie);
+      })).catch(errors => {
+        console.error(errors);
+      });
     },
 
   }
