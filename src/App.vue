@@ -1,15 +1,20 @@
 <template>
   <div id="app">
-    <input type="text" v-model="search" @keyup.enter="sendSearch">
+    <input type="text" v-model.trim="search" @keyup.enter="sendSearch">
     <div>
       <div v-for="(movie, index) in storeMovieLang" :key="index">
-        {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
-        <div v-if="showFlag.visible && showFlag.index != index">
-          <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
+
+        <img :src="`https://image.tmdb.org/t/p/w342${movie.backdrop_path}`" alt="">
+        <div>
+          {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
+          <div v-if="movie.showFlag != index">
+            <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
+          </div>
+          <div v-else>
+            {{movie.original_language}}
+          </div>
         </div>
-        <div v-else>
-          {{movie.original_language}}
-        </div>
+        <hr>
       </div>
     </div>
   </div>
@@ -26,10 +31,6 @@ export default {
     return{
       search: "",
       storeMovieSerie: [],
-      showFlag: {
-        index: -1,
-        visible: true,
-      }
     }
   },
 
@@ -55,6 +56,10 @@ export default {
         console.log("Il primo ",resultOne);
         console.log("Il secondo ",resultTwo);
         this.storeMovieSerie = [...resultOne, ...resultTwo];
+        this.storeMovieSerie.forEach( element => {
+          element.showFlag = -1;
+        })
+        console.log(this.storeMovieSerie);
       })).catch(errors => {
         console.error(errors);
       });
@@ -62,11 +67,10 @@ export default {
     sendSearch(){
       console.log(this.search);
       this.getMoviesAndSeries();
-      this.showFlag.index = -1;
     },
 
     imgNotFound(index){
-      this.showFlag.index = index;
+      this.storeMovieSerie[index].showFlag = index;
     }
   },
   
