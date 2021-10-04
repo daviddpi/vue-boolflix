@@ -28,6 +28,7 @@ export default {
     TakenSearch(needle){
       console.log(needle);
     },
+
   }
 }
 </script>

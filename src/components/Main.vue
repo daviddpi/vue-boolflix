@@ -45,7 +45,6 @@ export default {
     data(){
         return{
             storeMovieSerie: [],
-            
         }
     },
 
@@ -81,7 +80,7 @@ export default {
                 console.error(errors);
             });
         },
-
+    
         imgNotFound(index){
             this.storeMovieSerie[index].showFlag = index;
         },
