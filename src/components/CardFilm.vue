@@ -1,7 +1,8 @@
 <template>
     <div class="card-movie">
+        //l'API che non contiene un poster viene sostituita da un'immagine
         <img v-if="imgFilm != null" class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
-        <img v-else src="https://dummyimage.com/334x366/000000/db202c&text=BOOLFIX" alt="image boolfix">
+        <img v-else class="img-movie" src="https://dummyimage.com/334x205/000000/db202c&text=BOOLFIX" alt="image boolfix">
         
         <div class="info-card">
             <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
@@ -15,7 +16,7 @@
                 <div v-else-if="lang == 'en' ">
                     <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
                 </div>
-                <div v-else>
+                <div v-else class="lang">
                     {{lang}}
                 </div>
             </div>
@@ -28,7 +29,7 @@
                 <i class="fas fa-star starEmpty"></i>
                 </div>
             </div>
-            <p><strong>Overview:</strong> {{ overview | cutString() }}</p>
+            <p><strong>Overview:</strong> {{ overview }}</p>
         </div>
     </div>
 </template>
@@ -54,15 +55,6 @@ export default {
         }
     },
 
-    filters: {
-        cutString(str){
-            if(str.length > 300){
-                return str.slice(0, 300) + "...";
-            }
-            return str;
-        }
-    }
-
 }
 </script>
 
@@ -73,28 +65,7 @@ export default {
     color: white;
     border: 3px solid $secondaryColor;
     padding-top: 20px;
-    height: 440px;
-
-    // .img-movie{
-    //     width: 100%;
-    //     height: 100%;
-    //     object-fit: fill;
-    // }
-
-    // &:hover{
-    //     .info-card{
-    //         display: block;
-    //     }
-
-    //     .img-movie{
-    //         display: none;
-    //     }
-    // }
 }
-
-// .info-card{
-//     display: none;
-// }
 
 //animation
 .img-movie{
@@ -102,6 +73,8 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: fill;
+    border: 2px solid black;
+    box-shadow: 0 0 25px black;
 }
 
 .card-movie{
@@ -116,7 +89,7 @@ export default {
 
 .info-card {
     position: absolute;
-    padding: 20px;
+    padding: 15px;
     bottom: 0;
     left: 0;
     right: 10;
@@ -129,6 +102,9 @@ export default {
     transform: scale(0);
     -webkit-transition: .3s ease;
     transition: .3s ease;
+    overflow: auto;
+    box-shadow: 0 0 25px black;
+
 }
 //end animation
 
@@ -139,6 +115,11 @@ export default {
 
 .starEmpty{
     color: rgba($primaryColor, 0.3)
+}
+
+.lang{
+    text-transform: uppercase;
+    font-style: italic;
 }
 
 </style>

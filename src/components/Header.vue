@@ -1,7 +1,9 @@
 <template>
   <header>
     <div class="d-flex align-items-center justify-content-between">
-        <img src="../assets/logo.png" alt="Logo Boolfilx">
+        //il click 'refresh' svuota l'array movie ritornando alla pagina principale
+        <img @click="$emit('refresh')" src="../assets/logo.png" alt="Logo Boolfilx">
+        //keyup invia il testo scritto dall'utente all'app
         <input class="search-film" type="text" v-model.trim="search" @keyup.enter="$emit('sendSearch', search )" placeholder="Cerca film o serie Tv">
     </div>
   </header>
@@ -23,6 +25,12 @@ export default {
 
 header{
     background-color: black;
+}
+
+img{
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .search-film{

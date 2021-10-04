@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Header @sendSearch="getMoviesAndSeries" class="header"/>
+    //sendSearch prende il testo scritto dall'utente e lo manda alla funzione getMoviesAndSeries che lo inserisce nella query 
+    <Header @sendSearch="getMoviesAndSeries" @refresh="refreshPage" class="header"/>
+    // refresh prende il click e con una funzione refreshPage svuota l'array
     <Main :movieBD="storeMovieSerie" class="main pb-4"/>
   </div>
 </template>
@@ -26,6 +28,9 @@ export default {
   },
 
   methods: {
+    /**La funzione chiama un APi di film e serie tv e li inserisce nell'array storeMovieSerie
+     * @param needle è il testo scritto dall'utente che viene inserito nella query per ricercare il film richiesto
+     */
     getMoviesAndSeries(needle){
       const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
         params: {
@@ -46,15 +51,21 @@ export default {
       axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
         const resultOne = responses[0].data.results;
         const resultTwo = responses[1].data.results;
-        console.log("La risposta API ", responses);
-        console.log("Il primo ",resultOne);
-        console.log("Il secondo ",resultTwo);
+        // console.log("La risposta API ", responses);
+        // console.log("Il primo ",resultOne);
+        // console.log("Il secondo ",resultTwo);
         this.storeMovieSerie = [...resultOne, ...resultTwo];
-        console.log(this.storeMovieSerie);
+        // console.log(this.storeMovieSerie);
       })).catch(errors => {
         console.error(errors);
       });
     },
+
+    //la funzione che svuota l'array in modo da ricaricare la pagina
+    refreshPage(){
+      console.log("aggiornata la page");
+      this.storeMovieSerie = [];
+    }
 
   }
 }
