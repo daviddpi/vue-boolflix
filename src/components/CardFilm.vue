@@ -1,6 +1,6 @@
 <template>
     <div class="card-movie">
-        //l'API che non contiene un poster viene sostituita da un'immagine
+        <!-- l'API che non contiene un poster viene sostituita da un'immagine -->
         <img v-if="imgFilm != null" class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
         <img v-else class="img-movie" src="https://dummyimage.com/334x205/000000/db202c&text=BOOLFIX" alt="image boolfix">
         

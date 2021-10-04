@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <!-- sendSearch prende  testo scritto dall'utente e lo manda alla funzione  che lo inserisce nella query  -->
     <Header @sendSearch="getMoviesAndSeries" @refresh="refreshPage" class="header"/>
+    <!-- // refresh prende il click e con una funzione refreshPage svuota l'array -->
     <Main :movieBD="storeMovieSerie" class="main pb-4"/>
   </div>
 </template>
