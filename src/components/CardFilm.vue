@@ -1,6 +1,7 @@
 <template>
     <div class="card-movie">
-        <img class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
+        <img v-if="imgFilm != null" class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
+        <img v-else src="https://dummyimage.com/334x366/000000/db202c&text=BOOLFIX" alt="image boolfix">
         
         <div class="info-card">
             <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
@@ -70,30 +71,66 @@ export default {
 
 .card-movie{
     color: white;
-    background-color: black;
     border: 3px solid $secondaryColor;
     padding-top: 20px;
-    .img-movie{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        
-    }
+    height: 440px;
 
-    &:hover{
-        .info-card{
-            display: block;
-        }
+    // .img-movie{
+    //     width: 100%;
+    //     height: 100%;
+    //     object-fit: fill;
+    // }
 
-        .img-movie{
-            display: none;
-        }
-    }
+    // &:hover{
+    //     .info-card{
+    //         display: block;
+    //     }
+
+    //     .img-movie{
+    //         display: none;
+    //     }
+    // }
 }
 
-.info-card{
-    display: none;
+// .info-card{
+//     display: none;
+// }
+
+//animation
+.img-movie{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
+
+.card-movie{
+    position: relative;
+}
+
+.card-movie:hover .info-card {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+}
+
+.info-card {
+    position: absolute;
+    padding: 20px;
+    bottom: 0;
+    left: 0;
+    right: 10;
+    background-color: rgb(0, 0, 0);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: .3s ease;
+    transition: .3s ease;
+}
+//end animation
 
 .fas{
     color: $primaryColor;

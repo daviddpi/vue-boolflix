@@ -28,6 +28,17 @@ header{
 .search-film{
     height: 20%;
     margin-right: 50px;
+    background-color: $secondaryColor;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 3px;
+
+    &:focus{
+        outline: none !important;
+        border:1px solid $primaryColor;
+        box-shadow: 0 0 5px $primaryColor;
+    }
 }
 
 </style>

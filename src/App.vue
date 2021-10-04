@@ -29,17 +29,17 @@ export default {
     getMoviesAndSeries(needle){
       const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
         params: {
-            api_key: "401d4009e7dd2687f44c4cf8d0c98098",
-            language: "it-IT",
-            query: needle,
+          api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+          language: "it-IT",
+          query: needle,
         }
       });
             
       const addSeries = axios.get("https://api.themoviedb.org/3/search/tv", {
           params: {
-              api_key: "401d4009e7dd2687f44c4cf8d0c98098",
-              language: "it-IT",
-              query: needle,
+            api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            language: "it-IT",
+            query: needle,
           }
       });
 
