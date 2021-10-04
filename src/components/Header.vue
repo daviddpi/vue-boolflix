@@ -28,7 +28,6 @@ header{
 .search-film{
     height: 20%;
     margin-right: 50px;
-
 }
 
 </style>
