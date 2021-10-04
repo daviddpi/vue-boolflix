@@ -6,12 +6,17 @@
 
         <img :src="`https://image.tmdb.org/t/p/w342${movie.backdrop_path}`" alt="">
         <div>
-          {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}} , {{movie.vote_average}}
+          {{ movie.title ? movie.title : movie.name }} , {{movie.original_title ? movie.original_title : movie.original_name}}
           <div v-if="movie.showFlag != index">
             <img :src="`https://www.countryflags.io/${movie.original_language}/flat/24.png`" @error="imgNotFound(index)">
           </div>
           <div v-else>
             {{movie.original_language}}
+          </div>
+          <div class="d-flex">
+            <div v-for="(star, index) in valutation(movie)" :key="index">
+              <i class="fas fa-star"></i>
+            </div>
           </div>
         </div>
         <hr>
@@ -39,13 +44,16 @@ export default {
       const addMovie = axios.get("https://api.themoviedb.org/3/search/movie", {
           params: {
             api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            language: "it-IT",
             query: this.search,
+
           }
         });
       
       const addSeries = axios.get("https://api.themoviedb.org/3/search/tv", {
         params: {
             api_key: "401d4009e7dd2687f44c4cf8d0c98098",
+            language: "it-IT",
             query: this.search,
           }
       });
@@ -64,6 +72,7 @@ export default {
         console.error(errors);
       });
     },
+
     sendSearch(){
       console.log(this.search);
       this.getMoviesAndSeries();
@@ -71,7 +80,12 @@ export default {
 
     imgNotFound(index){
       this.storeMovieSerie[index].showFlag = index;
+    },
+
+    valutation(movie){
+      return parseInt( Math.max(movie.vote_average / 2) )
     }
+    
   },
   
   computed: {
@@ -113,7 +127,8 @@ export default {
             return str.original_language;
         }
       })
-    }
+    },
+
   }
 }
 </script>
