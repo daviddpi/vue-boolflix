@@ -3,9 +3,7 @@
         <div class="container">
             <div class="row g-5">
                 <div class="col-12">
-                    //se l'array contiene qualcosa da il numero dei risultati 
                     <div v-if="movieBD.length == 0" class="text-center text-white result-search">Cerca un film o una serie</div>
-                    //se l'array è ancora vuoto 
                     <div v-else class="text-center text-white result-search">La tua ricerca ha prodotto: {{ movieBD.length }} risultati</div>
                 </div>
                 <CardFilm class="col-12 col-sm-6 col-md-4 pb-2" v-for="(movie, index) in movieBD" :key="index"
