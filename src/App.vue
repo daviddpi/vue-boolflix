@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Header @sendSearch="getMoviesAndSeries" />
-    <Main :movieBD="storeMovieSerie" />
+    <Header @sendSearch="getMoviesAndSeries" class="header"/>
+    <Main :movieBD="storeMovieSerie" class="main"/>
   </div>
 </template>
 
@@ -62,5 +62,18 @@ export default {
 
 <style lang="scss">
 @import './style/general.scss';
+
+body{
+  height: 100vh;
+}
+
+.header{
+  height: max-content
+}
+
+.main{
+  height: calc(100vh - 86px);
+  overflow: auto;
+}
 
 </style>
