@@ -1,11 +1,12 @@
 <template>
     <div class="card-movie">
-        <img class="mb-3" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
+        <img class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
 
         <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
         <p>Titolo originale: {{original_title ? original_title : originalSerie_title}}</p>
 
-        <div class="mb-3">
+        <div class="mb-3 d-flex">
+            <p class="pe-3">Lingua:</p>
             <div v-if="lang == 'it' ">
                 <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png">
             </div>
@@ -51,11 +52,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../style/general.scss';
 
 .card-movie{
     color: white;
+}
+
+.img-movie{
+    width: 100%;
 }
 
 .fas{
