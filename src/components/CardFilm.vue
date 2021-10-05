@@ -1,8 +1,8 @@
 <template>
     <div class="card-movie">
         <!-- l'API che non contiene un poster viene sostituita da un'immagine -->
-        <img v-if="imgFilm != null" class="mb-3 img-movie" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
-        <img v-else class="img-movie" src="https://dummyimage.com/334x205/000000/db202c&text=BOOLFIX" alt="image boolfix">
+        <img v-if="imgFilm != null" class="mb-3 img-movie img-fluid" :src="`https://image.tmdb.org/t/p/w342${imgFilm}`">
+        <img v-else class="img-movie img-fluid" src="https://dummyimage.com/342x191/000000/db202c&text=BOOLFIX" alt="image boolfix">
         
         <div class="info-card">
             <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
@@ -22,14 +22,14 @@
             </div>
 
             <div class="d-flex mb-3">
-                <div v-for="(starFull, index) in valutation()" :key="index">
+                <div v-for="(starFull, index) in valutation()" :key="'starFull'+index">
                 <i class="fas fa-star"></i>
                 </div>
-                <div v-for="(starEmpty, index) in (5 - valutation())" :key="(5 - index)">
+                <div v-for="(starEmpty, index) in (5 - valutation())" :key="'starEmpty'+index">
                 <i class="fas fa-star starEmpty"></i>
                 </div>
             </div>
-            <p><strong>Overview:</strong> {{ overview }}</p>
+            <p><strong>Trama:</strong> {{ overview }}</p>
         </div>
     </div>
 </template>
@@ -104,8 +104,8 @@ export default {
     transition: .3s ease;
     overflow: auto;
     box-shadow: 0 0 25px black;
-
 }
+
 //end animation
 
 .fas{
@@ -119,7 +119,46 @@ export default {
 
 .lang{
     text-transform: uppercase;
-    font-style: italic;
+}
+
+@media screen and (min-width: 992px){
+    
+    //animation
+    .img-movie{
+        display: block;
+        border: 2px solid black;
+        box-shadow: 0 0 25px black;
+
+        &:hover{
+            box-shadow: 0 0 25px $primaryColor;
+        }
+    }
+
+    .card-movie{
+        // position: relative;
+    }
+
+    .card-movie:hover .info-card {
+        width: 25%;
+        left: 75%;
+    }
+
+    .info-card {
+        position: fixed;
+        padding: 15px;
+        top: 86px;
+        bottom: 0;
+        left: 100%;
+        right: 10;
+        background-color: rgba(0, 0, 0, .8);
+        overflow: hidden;
+        width: 0;
+        height: 100%;
+        transition: .3s ease;
+        overflow: auto;
+        z-index: 2;
+    }
+    //end animation
 }
 
 </style>

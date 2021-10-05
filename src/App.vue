@@ -51,11 +51,11 @@ export default {
       axios.all([addMovie, addSeries]).then(axios.spread( (...responses) => {
         const resultOne = responses[0].data.results;
         const resultTwo = responses[1].data.results;
-        // console.log("La risposta API ", responses);
-        // console.log("Il primo ",resultOne);
-        // console.log("Il secondo ",resultTwo);
+        console.log("La risposta API ", responses);
+        console.log("Il primo ",resultOne);
+        console.log("Il secondo ",resultTwo);
         this.storeMovieSerie = [...resultOne, ...resultTwo];
-        // console.log(this.storeMovieSerie);
+        console.log(this.storeMovieSerie);
       })).catch(errors => {
         console.error(errors);
       });
@@ -63,7 +63,6 @@ export default {
 
     //la funzione che svuota l'array in modo da ricaricare la pagina
     refreshPage(){
-      console.log("aggiornata la page");
       this.storeMovieSerie = [];
     }
 
@@ -86,6 +85,7 @@ body{
   height: calc(100vh - 86px);
   overflow: auto;
   padding-top: 50px;
+  position: relative;
 }
 
 
