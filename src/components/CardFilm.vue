@@ -5,31 +5,34 @@
         <img v-else class="img-movie img-fluid" src="https://dummyimage.com/342x191/000000/db202c&text=BOOLFIX" alt="image boolfix">
         
         <div class="info-card">
-            <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
-            <p><strong>Titolo originale:</strong> {{original_title ? original_title : originalSerie_title}}</p>
 
-            <div class="d-flex">
-                <p class="pe-3"><strong>Lingua: </strong></p>
-                <div v-if="lang == 'it' ">
-                    <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png">
-                </div>
-                <div v-else-if="lang == 'en' ">
-                    <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
-                </div>
-                <div v-else class="lang">
-                    {{lang}}
-                </div>
-            </div>
+            <div class="inner-info">
+                <h5><strong>Titolo:</strong> {{ title ? title : titleSerie }}</h5>  
+                <p><strong>Titolo originale:</strong> {{original_title ? original_title : originalSerie_title}}</p>
 
-            <div class="d-flex mb-3">
-                <div v-for="(starFull, index) in valutation()" :key="'starFull'+index">
-                <i class="fas fa-star"></i>
+                <div class="d-flex">
+                    <p class="pe-3"><strong>Lingua: </strong></p>
+                    <div v-if="lang == 'it' ">
+                        <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/800px-Flag_of_Italy.svg.png">
+                    </div>
+                    <div v-else-if="lang == 'en' ">
+                        <img class="lang-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/800px-Flag_of_the_United_Kingdom_%283-5%29.svg.png">
+                    </div>
+                    <div v-else class="lang">
+                        {{lang}}
+                    </div>
                 </div>
-                <div v-for="(starEmpty, index) in (5 - valutation())" :key="'starEmpty'+index">
-                <i class="fas fa-star starEmpty"></i>
+
+                <div class="d-flex mb-3">
+                    <div v-for="(starFull, index) in valutation()" :key="'starFull'+index">
+                    <i class="fas fa-star"></i>
+                    </div>
+                    <div v-for="(starEmpty, index) in (5 - valutation())" :key="'starEmpty'+index">
+                    <i class="fas fa-star starEmpty"></i>
+                    </div>
                 </div>
+                <p><strong>Trama:</strong> {{ overview }}</p>
             </div>
-            <p><strong>Trama:</strong> {{ overview }}</p>
         </div>
     </div>
 </template>
@@ -81,7 +84,7 @@ export default {
     position: relative;
 }
 
-.card-movie:hover .info-card {
+.card-movie:hover .info-card{
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -134,9 +137,17 @@ export default {
 //         }
 //     }
 
-//     .card-movie:hover .info-card {
+//     .card-movie:hover .info-card{
 //         width: 25%;
 //         left: 75%;
+//         z-index: 2;
+//         overflow: auto;
+//         height: 500px;
+        
+//         .inner-info{
+//             overflow: auto;
+//             height: 500px;
+//         }
 //     }
 
 //     .info-card {
@@ -147,18 +158,16 @@ export default {
 //         left: 100%;
 //         right: 10;
 //         background-color: rgba(0, 0, 0, .8);
-//         overflow: hidden;
 //         width: 0;
 //         height: 100%;
 //         transition: .3s ease;
 //         overflow: auto;
-//         z-index: 2;
-//         -webkit-transform: none;
-//         -ms-transform: none;
-//         transform: none;
+//         // -webkit-transform: none;
+//         // -ms-transform: none;
+//         // transform: none;
 //         -webkit-transition: .3s ease;
 //     }
 //     //end animation
-// }
+//}
 
 </style>
