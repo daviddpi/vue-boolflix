@@ -121,44 +121,44 @@ export default {
     text-transform: uppercase;
 }
 
-@media screen and (min-width: 992px){
+// @media screen and (min-width: 992px){
     
-    //animation
-    .img-movie{
-        display: block;
-        border: 2px solid black;
-        box-shadow: 0 0 25px black;
+//     //animation
+//     .img-movie{
+//         display: block;
+//         border: 2px solid black;
+//         box-shadow: 0 0 25px black;
 
-        &:hover{
-            box-shadow: 0 0 25px $primaryColor;
-        }
-    }
+//         &:hover{
+//             box-shadow: 0 0 25px $primaryColor;
+//         }
+//     }
 
-    .card-movie{
-        // position: relative;
-    }
+//     .card-movie:hover .info-card {
+//         width: 25%;
+//         left: 75%;
+//     }
 
-    .card-movie:hover .info-card {
-        width: 25%;
-        left: 75%;
-    }
-
-    .info-card {
-        position: fixed;
-        padding: 15px;
-        top: 86px;
-        bottom: 0;
-        left: 100%;
-        right: 10;
-        background-color: rgba(0, 0, 0, .8);
-        overflow: hidden;
-        width: 0;
-        height: 100%;
-        transition: .3s ease;
-        overflow: auto;
-        z-index: 2;
-    }
-    //end animation
-}
+//     .info-card {
+//         position: fixed;
+//         padding: 15px;
+//         top: 86px;
+//         bottom: 0;
+//         left: 100%;
+//         right: 10;
+//         background-color: rgba(0, 0, 0, .8);
+//         overflow: hidden;
+//         width: 0;
+//         height: 100%;
+//         transition: .3s ease;
+//         overflow: auto;
+//         z-index: 2;
+//         -webkit-transform: none;
+//         -ms-transform: none;
+//         transform: none;
+//         -webkit-transition: .3s ease;
+//     }
+//     //end animation
+// }
 
 </style>
